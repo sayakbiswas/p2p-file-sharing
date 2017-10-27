@@ -5,7 +5,7 @@ import java.nio.ByteBuffer;
 /**
  * Created by sayak on 10/26/17.
  */
-public class ChokeMessage {
+public class ChokeMessage extends Message {
     public static byte[] getChokeMessage() {
         int messageLength = 1;
         int messageType = 0;

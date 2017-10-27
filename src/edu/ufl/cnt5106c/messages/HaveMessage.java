@@ -6,7 +6,7 @@ import java.nio.ByteOrder;
 /**
  * Created by sayak on 10/26/17.
  */
-public class HaveMessage {
+public class HaveMessage extends Message {
     public static byte[] getHaveMessage(int pieceIndex) {
         int messageLength = 5;
         int messageType = 4;

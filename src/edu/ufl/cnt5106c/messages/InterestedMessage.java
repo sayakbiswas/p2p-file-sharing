@@ -5,7 +5,7 @@ import java.nio.ByteBuffer;
 /**
  * Created by sayak on 10/26/17.
  */
-public class InterestedMessage {
+public class InterestedMessage extends Message {
     public static byte[] getInterestedMessage() {
         int messageLength = 1;
         int messageType = 2;

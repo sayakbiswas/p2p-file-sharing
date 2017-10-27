@@ -4,35 +4,39 @@ package edu.ufl.cnt5106c.messages;
  * Created by sayak on 10/26/17.
  */
 public class Message {
-    private int messageLength;
-    private byte messageType;
-    private byte[] messagePayload;
+    private int messageLengthField;
+    private byte messageTypeField;
+    private byte[] messagePayloadField;
 
-    public Message(byte messageType) {
-        this.messageType = messageType;
+    public Message() {
+
     }
 
-    public int getMessageLength() {
-        return messageLength;
+    public Message(byte messageTypeField) {
+        this.messageTypeField = messageTypeField;
     }
 
-    public void setMessageLength(int messageLength) {
-        this.messageLength = messageLength;
+    public int getMessageLengthField() {
+        return messageLengthField;
     }
 
-    public byte getMessageType() {
-        return messageType;
+    public void setMessageLengthField(int messageLengthField) {
+        this.messageLengthField = messageLengthField;
     }
 
-    public void setMessageType(byte messageType) {
-        this.messageType = messageType;
+    public byte getMessageTypeField() {
+        return messageTypeField;
     }
 
-    public byte[] getMessagePayload() {
-        return messagePayload;
+    public void setMessageTypeField(byte messageTypeField) {
+        this.messageTypeField = messageTypeField;
     }
 
-    public void setMessagePayload(byte[] messagePayload) {
-        this.messagePayload = messagePayload;
+    public byte[] getMessagePayloadField() {
+        return messagePayloadField;
+    }
+
+    public void setMessagePayloadField(byte[] messagePayloadField) {
+        this.messagePayloadField = messagePayloadField;
     }
 }

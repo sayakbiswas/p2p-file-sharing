@@ -5,7 +5,7 @@ import java.nio.ByteBuffer;
 /**
  * Created by sayak on 10/26/17.
  */
-public class BitfieldMessage {
+public class BitfieldMessage extends Message {
     public static byte[] getBitfieldMessage(boolean[] hasPieces){
         int messageLength = (int) Math.ceil(hasPieces.length / 8.0);
         int messageType = 5;

@@ -1,6 +1,9 @@
 package edu.ufl.cnt5106c.config;
 
+import edu.ufl.cnt5106c.exceptions.ConfigException;
+
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -72,32 +75,48 @@ public class CommonConfig {
         }
     }
 
-    public void loadCommonConfig(String configFile) throws IOException, Exception { //TODO: Handle this
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(configFile));
-        String line = "";
-        while((line = bufferedReader.readLine()) != null) {
-            String[] tokens = line.trim().split("\\s+");
-            switch (tokens[0]) {
-                case "NumberOfPreferredNeighbors":
-                    setNumberOfPreferredNeighbors(Integer.parseInt(tokens[1]));
-                    break;
-                case "UnchokingInterval":
-                    setUnchokingInterval(Float.parseFloat(tokens[1]));
-                    break;
-                case "OptimisticUnchokingInterval":
-                    setOptimisticUnchokingInterval(Float.parseFloat(tokens[1]));
-                    break;
-                case "FileName":
-                    setSharedFileName(tokens[1]);
-                    break;
-                case "FileSize":
-                    setSharedFileSize(Long.parseLong(tokens[1]));
-                    break;
-                case "PieceSize":
-                    setSharedFilePieceSize(Integer.parseInt(tokens[1]));
-                    break;
-                default:
-                    throw new Exception("Unknown configuration option in Common.cfg"); //TODO: Change to a custom exception
+    public void loadCommonConfig(String configFile) { //TODO: Handle this
+        BufferedReader bufferedReader = null;
+        try {
+            bufferedReader = new BufferedReader(new FileReader(configFile));
+        } catch (FileNotFoundException fileNotFoundException) {
+            System.out.println("Could not find config file " + configFile);
+            fileNotFoundException.printStackTrace();
+        }
+        if(bufferedReader != null) {
+            String line = "";
+            try {
+                while((line = bufferedReader.readLine()) != null) {
+                    String[] tokens = line.trim().split("\\s+");
+                    switch (tokens[0]) {
+                        case "NumberOfPreferredNeighbors":
+                            setNumberOfPreferredNeighbors(Integer.parseInt(tokens[1]));
+                            break;
+                        case "UnchokingInterval":
+                            setUnchokingInterval(Float.parseFloat(tokens[1]));
+                            break;
+                        case "OptimisticUnchokingInterval":
+                            setOptimisticUnchokingInterval(Float.parseFloat(tokens[1]));
+                            break;
+                        case "FileName":
+                            setSharedFileName(tokens[1]);
+                            break;
+                        case "FileSize":
+                            setSharedFileSize(Long.parseLong(tokens[1]));
+                            break;
+                        case "PieceSize":
+                            setSharedFilePieceSize(Integer.parseInt(tokens[1]));
+                            break;
+                        default:
+                            throw new ConfigException(configFile);
+                    }
+                }
+            } catch (IOException ioException) {
+                System.out.println("IOException while reading config file " + configFile);
+                ioException.printStackTrace();
+            } catch (ConfigException configException) {
+                System.out.println("ConfigException while reading config file " + configFile);
+                configException.printStackTrace();
             }
         }
     }
