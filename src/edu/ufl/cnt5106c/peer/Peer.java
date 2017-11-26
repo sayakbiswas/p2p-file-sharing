@@ -2,6 +2,7 @@ package edu.ufl.cnt5106c.peer;
 
 import edu.ufl.cnt5106c.config.CommonConfig;
 
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.*;
 
@@ -23,6 +24,7 @@ public class Peer {
     private List<Integer> unchokedPeers;
     private int optimisticallyUnchokedPeer;
     private Map<Integer, Integer> requestedPieceMap;
+    private ObjectOutputStream outputStream;
 
     public Peer(int id, String ipAddress, int portNumber, boolean hasFile) {
         this.id = id;
@@ -160,5 +162,13 @@ public class Peer {
 
     public void removeRequestedPiece(int requestedPieceIndex) {
         requestedPieceMap.remove(requestedPieceIndex);
+    }
+
+    public ObjectOutputStream getOutputStream() {
+        return outputStream;
+    }
+
+    public void setOutputStream(ObjectOutputStream outputStream) {
+        this.outputStream = outputStream;
     }
 }

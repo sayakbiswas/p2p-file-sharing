@@ -7,7 +7,7 @@ import java.nio.ByteOrder;
  * Created by sayak on 10/27/17.
  */
 public class RequestMessage extends Message {
-    public static byte[] getRequestMessage(int pieceIndex) {
+    public static byte[] getMessage(int pieceIndex) {
         int messageLength = 5;
         int messageType = 6;
         byte[] message = new byte[4 + messageLength];

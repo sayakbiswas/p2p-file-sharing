@@ -6,7 +6,7 @@ import java.nio.ByteBuffer;
  * Created by sayak on 10/27/17.
  */
 public class PieceMessage extends Message {
-    public static byte[] getPieceMessage(int pieceIndex, byte[] bytes){
+    public static byte[] getMessage(int pieceIndex, byte[] bytes){
         int messageLength = 1 + 4 + bytes.length;
         byte messageType = 7;
         byte message[] = new byte[(4 + messageLength)];
