@@ -14,6 +14,7 @@ public class Peer {
     private String ipAddress;
     private int portNumber;
     private boolean hasFile;
+    private int countPieces;
     private boolean[] availableFilePieces;
     private List<Socket> sockets;
     private Map<Integer, Peer> neighborMap;
@@ -87,7 +88,10 @@ public class Peer {
             }
         }
     }
-
+    public boolean[] getPieces ()//Added by Ankit
+    {
+        return availableFilePieces;
+    }
     public CommonConfig getCommonConfig() {
         return commonConfig;
     }
@@ -106,6 +110,10 @@ public class Peer {
 
     public boolean isUnchoked() {
         return isUnchoked;
+    }
+    //Ankit
+    public Map<Integer, Peer> getneighborMap() {
+        return neighborMap;
     }
 
     public void setUnchoked(boolean isUnchoked) {
@@ -171,4 +179,37 @@ public class Peer {
     public void setOutputStream(ObjectOutputStream outputStream) {
         this.outputStream = outputStream;
     }
+    //Added by Ankit
+    public void updateneighbourPiece(int id, int index){
+        if(index < countPieces)
+            neighborMap.get(id).availableFilePieces[index]=true;
+    }
+    public int getPieceMissing(int remotePeerId) //Added by Ankit
+    {
+        boolean[] currPieces = this.getPieces();
+        Peer peerMap = this.getNeighborMap().get(remotePeerId);
+        int ind = 0;
+        boolean[] available = peerMap.availableFilePieces;
+        List<Integer> miss = new ArrayList<>();
+        for(boolean cp:currPieces)
+        {
+            for(boolean rp:available)
+            {
+                if(!(cp) && !requestedPieceMap.containsKey(ind) && rp )
+                {
+                    miss.add(ind);
+                }
+            }
+            ind++;
+
+        }
+        if(miss.size() == 0)
+        {
+            return -1;
+        }
+        Random r = new Random();
+        int rInt = r.nextInt(miss.size());
+        return miss.get(rInt);
+    }
+
 }

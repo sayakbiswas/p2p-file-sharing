@@ -2,6 +2,7 @@ package edu.ufl.cnt5106c.messages;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.Arrays;
 
 /**
  * Created by sayak on 10/27/17.
@@ -24,5 +25,10 @@ public class RequestMessage extends Message {
         }
 
         return message;
+    }
+    //Added By Ankit
+    public static int getIndex(byte msg[]) // to get piece index
+    {
+        return ByteBuffer.wrap(Arrays.copyOfRange(msg, 5, 9)).order(ByteOrder.BIG_ENDIAN).getInt();
     }
 }
