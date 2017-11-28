@@ -1,3 +1,4 @@
+import edu.ufl.cnt5106c.client.Client;
 import edu.ufl.cnt5106c.config.PeerInfoConfig;
 import edu.ufl.cnt5106c.messages.ChokeMessage;
 import edu.ufl.cnt5106c.peer.Peer;
@@ -33,6 +34,9 @@ public class peerProcess {
 
         for(Peer neighbor : peers) {
             //TODO: open client connections with neighbors
+            if(neighbor.getId() != peerId) {
+                Client client = new Client(peer, neighbor);
+            }
         }
     }
 }
