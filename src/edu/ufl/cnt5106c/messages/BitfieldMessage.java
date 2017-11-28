@@ -31,4 +31,24 @@ public class BitfieldMessage extends Message {
         }
         return message;
     }
+    public static boolean[] getBitFieldPieces(byte message[])//Added by Ankit
+    {
+        int len=message.length;
+        int payload_len = len-5;
+        boolean pieces[] = new boolean[payload_len*8];
+        int z=7;
+        int k=5;
+        for(int i=0;k<message.length;i++){
+            if((message[k] & (byte)Math.pow(2, z)) != 0){
+                pieces[i]=true;
+            }
+            z--;
+            if(z<0){
+                k++;
+                z=7;
+            }
+        }
+        return pieces;
+
+    }
 }
