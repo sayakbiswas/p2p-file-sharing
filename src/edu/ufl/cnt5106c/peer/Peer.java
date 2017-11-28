@@ -1,7 +1,10 @@
 package edu.ufl.cnt5106c.peer;
 
 import edu.ufl.cnt5106c.config.CommonConfig;
+import edu.ufl.cnt5106c.messages.ChokeMessage;
+import edu.ufl.cnt5106c.messages.UnchokeMessage;
 
+import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.*;
@@ -25,6 +28,11 @@ public class Peer {
     private int optimisticallyUnchokedPeer;
     private Map<Integer, Integer> requestedPieceMap;
     private ObjectOutputStream outputStream;
+    private long timerToSelectPreferredNeighbors;
+    private long timerToOptimisticallyUnchokeNeighbor;
+    private long timeUnchoked;
+    private long bytesDownloadedAfterUnchoking;
+    private double downloadRate;
 
     public Peer(int id, String ipAddress, int portNumber, boolean hasFile) {
         this.id = id;
@@ -42,6 +50,8 @@ public class Peer {
         this.unchokedPeers = new ArrayList<>();
         this.optimisticallyUnchokedPeer = 0;
         this.requestedPieceMap = new HashMap<>();
+        this.timerToSelectPreferredNeighbors = (long)commonConfig.getUnchokingInterval() * 1000;
+        this.timerToOptimisticallyUnchokeNeighbor = (long)commonConfig.getOptimisticUnchokingInterval() * 1000;
     }
 
     public int getId() {
@@ -110,6 +120,7 @@ public class Peer {
 
     public void setUnchoked(boolean isUnchoked) {
         this.isUnchoked = isUnchoked;
+        this.timeUnchoked = System.currentTimeMillis();
     }
 
     public List<Integer> getInterestedPeers() {
@@ -170,5 +181,127 @@ public class Peer {
 
     public void setOutputStream(ObjectOutputStream outputStream) {
         this.outputStream = outputStream;
+    }
+
+    public long getTimeUnchoked() {
+        return timeUnchoked;
+    }
+
+    public long getBytesDownloadedAfterUnchoking() {
+        return bytesDownloadedAfterUnchoking;
+    }
+
+    public double getDownloadRate() {
+        return downloadRate;
+    }
+
+    public void setDownloadRate(double downloadRate) {
+        this.downloadRate = downloadRate;
+    }
+
+    public void startPreferredNeighborSelection() {
+        Peer peer = this;
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true) {
+                    for(int interestedPeerId : peer.interestedPeers) {
+                        Peer interestedPeer = peer.getNeighborMap().get(interestedPeerId);
+                        long currentTime = System.currentTimeMillis();
+                        interestedPeer.setDownloadRate(
+                                (double)interestedPeer.getBytesDownloadedAfterUnchoking()
+                                        / (double)(currentTime - interestedPeer.getTimeUnchoked()));
+
+                    }
+                    if(!peer.interestedPeers.isEmpty()) {
+                        if(peer.hasFile) {
+                            Collections.shuffle(peer.interestedPeers);
+                            peer.chokeOrUnchokePeers(peer.interestedPeers);
+                        } else {
+                            Collections.sort(interestedPeers, new Comparator<Integer>() {
+                                @Override
+                                public int compare(Integer peer1, Integer peer2) {
+                                    double downloadRate1 = peer.getNeighborMap().get(peer1).getDownloadRate();
+                                    double downloadRate2 = peer.getNeighborMap().get(peer2).getDownloadRate();
+                                    return (int)(downloadRate2 - downloadRate1);
+                                }
+                            });
+                            peer.chokeOrUnchokePeers(peer.interestedPeers);
+                        }
+                    }
+                    try {
+                        Thread.sleep(peer.timerToSelectPreferredNeighbors);
+                    } catch (InterruptedException interruptedException) {
+                        System.out.println("Thread to reselect preferred neighbors interrupted while trying to sleep.");
+                        interruptedException.printStackTrace();
+                    }
+                }
+            }
+        });
+        thread.start();
+    }
+
+    private void chokeOrUnchokePeers(List<Integer> interestedPeers) {
+        List<Integer> preferredNeighbors = interestedPeers.subList(0, getCommonConfig().getNumberOfPreferredNeighbors());
+        for(int unchokedPeerId : getUnchokedPeers()) {
+            if(getOptimisticallyUnchokedPeer() != unchokedPeerId && !preferredNeighbors.contains(unchokedPeerId)) {
+                byte[] message = ChokeMessage.getMessage();
+                getNeighborMap().get(unchokedPeerId).send(message);
+                removeUnchokedPeer(unchokedPeerId);
+            }
+        }
+
+        for(int preferredNeighbor : preferredNeighbors) {
+            if(!getUnchokedPeers().contains(preferredNeighbor)) {
+                byte[] message = UnchokeMessage.getMessage();
+                getNeighborMap().get(preferredNeighbor).send(message);
+                unchokePeer(preferredNeighbor);
+            }
+        }
+    }
+
+    public void startOptimisticallyUnchokingPeer() {
+        Peer peer = this;
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true) {
+                    peer.optimisticallyUnchokePeer(peer.getInterestedPeers());
+                    try {
+                        Thread.sleep(timerToOptimisticallyUnchokeNeighbor);
+                    } catch (InterruptedException interruptedException) {
+                        System.out.println("Thread to optimistically unchoke neighbor interrupted while trying to sleep.");
+                        interruptedException.printStackTrace();
+                    }
+                }
+            }
+        });
+        thread.start();
+    }
+
+    private void optimisticallyUnchokePeer(List<Integer> interestedPeers) {
+        List<Integer> candidatePeers = new ArrayList<>();
+        for(int interestedPeerId : interestedPeers) {
+            if(!getUnchokedPeers().contains(interestedPeerId)) {
+                candidatePeers.add(interestedPeerId);
+            }
+        }
+        if(!candidatePeers.isEmpty()) {
+            Collections.shuffle(candidatePeers);
+            int optimisticallyUnchokedPeerId = candidatePeers.get(0);
+            byte[] message = UnchokeMessage.getMessage();
+            getNeighborMap().get(optimisticallyUnchokedPeerId).send(message);
+            setOptimisticallyUnchokedPeer(optimisticallyUnchokedPeerId);
+        }
+    }
+
+    void send(byte[] message) {
+        try {
+            outputStream.writeObject(message);
+            outputStream.flush();
+        } catch (IOException ioException) {
+            System.out.println("IOException while sending message " + new String(message) + "from peer " + getId());
+            ioException.printStackTrace();
+        }
     }
 }

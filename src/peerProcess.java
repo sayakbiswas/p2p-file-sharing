@@ -1,5 +1,7 @@
 import edu.ufl.cnt5106c.config.PeerInfoConfig;
+import edu.ufl.cnt5106c.messages.ChokeMessage;
 import edu.ufl.cnt5106c.peer.Peer;
+import edu.ufl.cnt5106c.server.Server;
 
 import java.util.List;
 
@@ -15,9 +17,17 @@ public class peerProcess {
         int peerId = Integer.parseInt(args[0]);
         PeerInfoConfig peerInfoConfig = new PeerInfoConfig("PeerInfo.cfg");
         Peer peer = peerInfoConfig.getPeer(peerId);
-        //TODO: Start connection listener
-        //TODO: Manage choking
-        //TODO: Manage optimistic unchoking
+
+        //Start connection listener
+        Server server = new Server(peer);
+        Thread serverThread = new Thread(server);
+        serverThread.start();
+
+        //Manage choking/unchoking
+        peer.startPreferredNeighborSelection();
+
+        //Manage optimistic unchoking
+        peer.startOptimisticallyUnchokingPeer();
 
         List<Peer> peers = peerInfoConfig.getAllPeers();
 

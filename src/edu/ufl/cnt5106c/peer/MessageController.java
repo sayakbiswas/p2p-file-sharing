@@ -37,7 +37,7 @@ public class MessageController implements Runnable {
                     for(int i = 0; i < availableFilePieces.length; i++) {
                         if(availableFilePieces[i]) {
                             byte[] bitfieldMessage = BitfieldMessage.getMessage(availableFilePieces);
-                            send(bitfieldMessage);
+                            peer.send(bitfieldMessage);
                             break;
                         }
                     }
@@ -56,16 +56,6 @@ public class MessageController implements Runnable {
         } catch(ClassNotFoundException classNotFoundException) {
             System.out.println("ClassNotFoundException in message controller of peer " + peer.getId());
             classNotFoundException.printStackTrace();
-        }
-    }
-
-    void send(byte[] message) {
-        try {
-            outputStream.writeObject(message);
-            outputStream.flush();
-        } catch (IOException ioException) {
-            System.out.println("IOException while sending message " + new String(message) + "from peer " + peer.getId());
-            ioException.printStackTrace();
         }
     }
 }
