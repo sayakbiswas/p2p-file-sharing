@@ -1,8 +1,11 @@
 package edu.ufl.cnt5106c.server;
 
+import edu.ufl.cnt5106c.messages.HandshakeMessage;
+import edu.ufl.cnt5106c.peer.MessageController;
 import edu.ufl.cnt5106c.peer.Peer;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -24,7 +27,10 @@ public class Server implements Runnable {
             while(true) {
                 Socket socket = listener.accept();
                 peer.addSocket(socket);
-                //TODO: Create a class for sending and receiving messages
+                ObjectOutputStream outputStream = (ObjectOutputStream) socket.getOutputStream();
+                MessageController messageController = new MessageController(socket, peer, outputStream);
+                byte[] message = HandshakeMessage.getMessage(peer.getId());
+                peer.send(message);
             }
         } catch(IOException ioException) {
             System.out.println("IOException while opening socket at port number " + portNumber + " for peer " + peer.getId());

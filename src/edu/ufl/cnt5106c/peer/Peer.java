@@ -329,7 +329,7 @@ public class Peer {
         }
     }
 
-    void send(byte[] message) {
+    public void send(byte[] message) {
         try {
             outputStream.writeObject(message);
             outputStream.flush();

@@ -36,6 +36,7 @@ public class peerProcess {
             //TODO: open client connections with neighbors
             if(neighbor.getId() != peerId) {
                 Client client = new Client(peer, neighbor);
+                client.connect();
             }
         }
     }
