@@ -27,8 +27,10 @@ public class Server implements Runnable {
             while(true) {
                 Socket socket = listener.accept();
                 peer.addSocket(socket);
-                ObjectOutputStream outputStream = (ObjectOutputStream) socket.getOutputStream();
+                ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
                 MessageController messageController = new MessageController(socket, peer, outputStream);
+                Thread thread = new Thread(messageController);
+                thread.start();
                 byte[] message = HandshakeMessage.getMessage(peer.getId());
                 peer.send(message);
             }

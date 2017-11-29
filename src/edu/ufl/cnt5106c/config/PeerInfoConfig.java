@@ -22,7 +22,7 @@ public class PeerInfoConfig {
     }
 
     public List<Peer> getAllPeers() {
-        return (List<Peer>) peerMap.values();
+        return new LinkedList<>(peerMap.values());
     }
 
     public PeerInfoConfig(String peerInfoConfigFile) {
@@ -54,7 +54,7 @@ public class PeerInfoConfig {
                     int peerId = Integer.parseInt(tokens[0]);
                     String peerIpAddress = tokens[1];
                     int peerPortNumber = Integer.parseInt(tokens[2]);
-                    boolean peerHasFile = Integer.parseInt(tokens[3]) == 1;
+                    boolean peerHasFile = (Integer.parseInt(tokens[3]) == 1);
                     peerMap.put(peerId, new Peer(peerId, peerIpAddress, peerPortNumber, peerHasFile));
                 }
             } catch (IOException ioException) {

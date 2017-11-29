@@ -33,7 +33,6 @@ public class peerProcess {
         List<Peer> peers = peerInfoConfig.getAllPeers();
 
         for(Peer neighbor : peers) {
-            //TODO: open client connections with neighbors
             if(neighbor.getId() != peerId) {
                 Client client = new Client(peer, neighbor);
                 client.connect();

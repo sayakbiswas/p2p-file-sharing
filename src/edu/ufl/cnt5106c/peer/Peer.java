@@ -342,8 +342,10 @@ public class Peer {
 
     public void send(byte[] message) {
         try {
-            outputStream.writeObject(message);
-            outputStream.flush();
+            if(outputStream != null) {
+                outputStream.writeObject(message);
+                outputStream.flush();
+            }
         } catch (IOException ioException) {
             System.out.println("IOException while sending message " + new String(message) + "from peer " + getId());
             ioException.printStackTrace();

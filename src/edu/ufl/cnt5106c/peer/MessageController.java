@@ -26,7 +26,7 @@ public class MessageController implements Runnable {
 
     public void run() {
         try {
-            inputStream = (ObjectInputStream) socket.getInputStream();
+            inputStream = new ObjectInputStream(socket.getInputStream());
             while(true) {
                 byte[] incomingMessage = (byte[])inputStream.readObject();
                 if(HandshakeMessage.checkForIncomingHandshake(incomingMessage)) {

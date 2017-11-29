@@ -25,22 +25,15 @@ public class Client {
         try {
             socket = new Socket(remotePeer.getIpAddress(), remotePeer.getPortNumber());
             peer.addSocket(socket);
-            ObjectOutputStream outputStream = (ObjectOutputStream) socket.getOutputStream();
+            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
             MessageController messageController = new MessageController(socket, peer, outputStream);
+            Thread thread = new Thread(messageController);
+            thread.start();
             byte[] message = HandshakeMessage.getMessage(peer.getId());
             peer.send(message);
         } catch(IOException ioException) {
             System.out.println("IOException while connecting to server " + remotePeer.getId());
             ioException.printStackTrace();
-        } finally {
-            if(socket != null) {
-                try {
-                    socket.close();
-                } catch (IOException ioException1) {
-                    System.out.println("IOException while closing socket with port number " + remotePeer.getPortNumber());
-                    ioException1.printStackTrace();
-                }
-            }
         }
     }
 }

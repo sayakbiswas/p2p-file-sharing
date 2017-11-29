@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact build-on-make="true" name="Config Files">
+    <output-path>$PROJECT_DIR$/out/production/P2PFileSharing</output-path>
+    <root id="root">
+      <element id="file-copy" path="$PROJECT_DIR$/Common.cfg" />
+      <element id="file-copy" path="$PROJECT_DIR$/PeerInfo.cfg" />
+      <element id="file-copy" path="$PROJECT_DIR$/TheFile.dat" />
+    </root>
+  </artifact>
+</component>
