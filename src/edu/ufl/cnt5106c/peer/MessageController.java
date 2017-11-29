@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Map;
 
 /**
  * Created by sayak on 11/25/17.
@@ -45,7 +46,13 @@ public class MessageController implements Runnable {
                         peer.setUnchoked(false);
                     } else if(incomingMessage[4] == 1) { //Unchoke message
                         peer.setUnchoked(true);
-
+                        peer.getNeighborMap().get(remotePeerId).resetUnchokeTimer();
+                        int missingPieceIndex = peer.getPieceMissing(remotePeerId);
+                        if(missingPieceIndex != -1) {
+                            peer.requestPiece(missingPieceIndex, remotePeerId);
+                            byte[] message = RequestMessage.getMessage(missingPieceIndex);
+                            peer.send(message);
+                        }
                     }
                     //Ankit
                     else if(incomingMessage[4] == 2)
@@ -96,9 +103,36 @@ public class MessageController implements Runnable {
                     }
                     else if(incomingMessage[4] == 6)
                     {
-                        int index = RequestMessage.getIndex(incomingMessage);
-                      //
+                        int pieceIndex = RequestMessage.getIndex(incomingMessage);
+                        byte[] dataInPiece = peer.getDataInPiece(pieceIndex);
+                        byte[] message = PieceMessage.getMessage(pieceIndex, dataInPiece);
+                        peer.send(message);
+                    } else if(incomingMessage[4] == 7) {
+                        byte[] dataInPiece = PieceMessage.retrievePieceData(incomingMessage);
+                        int indexOfPiece = PieceMessage.getIndexOfPiece(incomingMessage);
+                        peer.updateDataReceivedFromPeer(remotePeerId, dataInPiece.length);
+                        peer.getFile().setPieceAtIndex(indexOfPiece, new Piece(dataInPiece));
+                        peer.setFilePieceAvailabilityAtIndex(true, indexOfPiece);
+                        boolean hasFile = peer.hasCompleteFile();
+                        peer.setHasFile(hasFile);
+                        peer.saveFileToDisk();
+                        peer.removeRequestedPiece(indexOfPiece);
 
+                        if(!peer.hasFile() && peer.isUnchoked()) {
+                            int missingPieceIndex = peer.getPieceMissing(remotePeerId);
+                            if(missingPieceIndex != -1) {
+                                peer.requestPiece(missingPieceIndex, remotePeerId);
+                                byte[] message = RequestMessage.getMessage(missingPieceIndex);
+                                peer.send(message);
+                            }
+                        }
+
+                        for(Map.Entry<Integer, Peer> entry : peer.getNeighborMap().entrySet()) {
+                            if(peer.getId() != entry.getKey()) {
+                                byte[] message = HaveMessage.getMessage(indexOfPiece);
+                                entry.getValue().send(message);
+                            }
+                        }
                     }
                 }
             }

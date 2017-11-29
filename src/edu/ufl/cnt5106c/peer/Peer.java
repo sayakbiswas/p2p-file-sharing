@@ -4,6 +4,8 @@ import edu.ufl.cnt5106c.config.CommonConfig;
 import edu.ufl.cnt5106c.messages.ChokeMessage;
 import edu.ufl.cnt5106c.messages.UnchokeMessage;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -77,6 +79,10 @@ public class Peer {
 
     public boolean[] getAvailableFilePieces() {
         return availableFilePieces;
+    }
+
+    public void setFilePieceAvailabilityAtIndex(boolean availability, int index) {
+        availableFilePieces[index] = true;
     }
 
     public List<Socket> getSockets() {
@@ -329,6 +335,11 @@ public class Peer {
         }
     }
 
+    public void resetUnchokeTimer() {
+        timeUnchoked = System.currentTimeMillis();
+        bytesDownloadedAfterUnchoking = 0;
+    }
+
     public void send(byte[] message) {
         try {
             outputStream.writeObject(message);
@@ -336,6 +347,49 @@ public class Peer {
         } catch (IOException ioException) {
             System.out.println("IOException while sending message " + new String(message) + "from peer " + getId());
             ioException.printStackTrace();
+        }
+    }
+
+    public byte[] getDataInPiece(int pieceIndex) {
+        return file.getPieceAtIndex(pieceIndex).getData();
+    }
+
+    public void updateDataReceivedFromPeer(int remotePeerId, int length) {
+        getNeighborMap().get(remotePeerId).bytesDownloadedAfterUnchoking += length;
+    }
+
+    public boolean hasCompleteFile() {
+        for(boolean availableFilePiece : availableFilePieces) {
+            if(!availableFilePiece) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void saveFileToDisk() {
+        FileOutputStream fileOutputStream = null;
+        try {
+            fileOutputStream = new FileOutputStream(commonConfig.getSharedFileName());
+            for(Piece piece : file.getPieces()) {
+                fileOutputStream.write(piece.getData());
+            }
+        } catch (FileNotFoundException fileNotFoundException) {
+            System.out.println("FileNotFoundException while saving downloaded file to disk.");
+            fileNotFoundException.printStackTrace();
+        } catch (IOException ioException) {
+            System.out.println("IOException while writing pieces to file.");
+            ioException.printStackTrace();
+        } finally {
+            if(fileOutputStream != null) {
+                try {
+                    fileOutputStream.flush();
+                    fileOutputStream.close();
+                } catch(IOException ioException) {
+                    System.out.println("IOException while closing file output stream");
+                    ioException.printStackTrace();
+                }
+            }
         }
     }
 }

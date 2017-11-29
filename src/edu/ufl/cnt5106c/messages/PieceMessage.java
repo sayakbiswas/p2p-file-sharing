@@ -29,4 +29,15 @@ public class PieceMessage extends Message {
         return message;
     }
 
+    public static byte[] retrievePieceData(byte[] incomingMessage) {
+        byte[] pieceData = new byte[incomingMessage.length - 9];
+        System.arraycopy(incomingMessage, 9, pieceData, 0, pieceData.length);
+        return pieceData;
+    }
+
+    public static int getIndexOfPiece(byte[] incomingMessage) {
+        byte[] pieceIndex = new byte[4];
+        System.arraycopy(incomingMessage, 5, pieceIndex, 0, 4);
+        return ByteBuffer.wrap(pieceIndex).getInt();
+    }
 }
