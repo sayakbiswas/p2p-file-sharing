@@ -1,77 +1,93 @@
 package edu.ufl.cnt5106c.logging;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 /**
  * Created by sayak on 10/26/17.
  */
-public class PeerLogger {
+//Added by Ankit
+public class PeerLogger
+{
     private static Logger LOGGER;
-    private static int peerId;
-    public static void setup(int peerId) throws IOException { //TODO: Handle this
-        PeerLogger.peerId = peerId;
-        LOGGER = Logger.getLogger("PeerLogger");
+    private static int Id;
+    private static FileHandler logHandler;
+    private static SimpleFormatter logformatter;
+
+    public PeerLogger(int peerId) throws IOException
+    {
+        //Constructor
+        Id = peerId;
+        LOGGER = Logger.getLogger("PeerLogger"+PeerLogger.Id);
         LOGGER.setLevel(Level.INFO);
-        LOGGER.addHandler(new FileHandler("log_peer_" + peerId + ".log"));
+        logHandler  = new FileHandler("log_peer_"+peerId+".log");
+        logformatter = new SimpleFormatter();
+        logHandler.setFormatter(logformatter);
+        LOGGER.addHandler(logHandler);
     }
 
     public static void logTCPCreateConnection(int remotePeerId) {
-        String message = System.currentTimeMillis() + ": Peer " + peerId + " makes a connection to Peer " + remotePeerId;
-        LOGGER.log(Level.INFO, message);
+        LOGGER.info(":Peer " + Id + " makes a connection to Peer " + remotePeerId + "\n");
     }
 
     public static void logTCPReceiveConnection(int remotePeerId) {
-        String message = System.currentTimeMillis() + ": Peer " + peerId + " is connected from Peer " + remotePeerId;
-        LOGGER.log(Level.INFO, message);
+        LOGGER.info(":Peer " + Id + " is connected from Peer " + remotePeerId + "\n");
     }
 
-    public static void logChangeOfPreferredNeighbors(String preferredNeighbors) {
-        String message = System.currentTimeMillis() + ": Peer " + peerId + " has the preferred neighbors " + preferredNeighbors;
-        LOGGER.log(Level.INFO, message);
+    public static void logChangeOfPreferredNeighbors(ArrayList<Integer> preferredNeighbors) {
+        StringBuffer textlog = new StringBuffer();
+        textlog.append(":Peer " + Id + " has the preferred neighbores ");
+
+        for (int i = 0; i < preferredNeighbors.size(); i++)
+        {
+            if (i != (preferredNeighbors.size() - 1))
+            {
+                textlog.append(preferredNeighbors.get(i) + ", ");
+            }
+            else
+            {
+                textlog.append(preferredNeighbors.get(i) + "\n");
+            }
+        }
+        LOGGER.info(textlog.toString());
     }
 
     public static void logChangeOfOptimisticallyUnchokedNeighbor(int optimisticallyUnchokedNeighbor) {
-        String message = System.currentTimeMillis() + ": Peer " + peerId + " has the optimistically unchoked neighbor " +
-                optimisticallyUnchokedNeighbor;
-        LOGGER.log(Level.INFO, message);
+        LOGGER.info(": Peer " + Id + " has the optimistically unchoked neighbor " + optimisticallyUnchokedNeighbor + "\n");
     }
 
     public static void logUnchoking(int remotePeerId) {
-        String message = System.currentTimeMillis() + ": Peer " + peerId + " is unchoked by " + remotePeerId;
-        LOGGER.log(Level.INFO, message);
+        LOGGER.info(": Peer " + Id + " is unchoked by " + remotePeerId + "\n");
     }
 
+
     public static void logChoking(int remotePeerId) {
-        String message = System.currentTimeMillis() + ": Peer " + peerId + " is choked by " + remotePeerId;
-        LOGGER.log(Level.INFO, message);
+        LOGGER.info(": Peer " + Id + " is choked by " + remotePeerId + "\n");
     }
 
     public static void logReceiveHaveMessage(int remotePeerId, int pieceIndex) {
-        String message = System.currentTimeMillis() + ": Peer " + peerId + " received 'have' message from " + remotePeerId +
-                " for the piece " + pieceIndex;
-        LOGGER.log(Level.INFO, message);
+        LOGGER.info(": Peer " + Id + " received the ‘have’message from " + remotePeerId + " for the piece " + pieceIndex + "\n");
     }
 
     public static void logReceiveInterestedMessage(int remotePeerId) {
-        String message = System.currentTimeMillis() + ": Peer " + peerId + " received 'interested' message from " + remotePeerId;
-        LOGGER.log(Level.INFO, message);
+        LOGGER.info(": Peer " + Id + " received the ‘interested’message from " + remotePeerId + "\n");
     }
 
     public static void logReceiveNotInterestedMessage(int remotePeerId) {
-        String message = System.currentTimeMillis() + ": Peer " + peerId + " received 'not interested' message from " + remotePeerId;
-        LOGGER.log(Level.INFO, message);
+        LOGGER.info(": Peer " + Id + " received the ‘not interested’message from " + remotePeerId + "\n");
     }
 
     public static void logDownloadPiece(int remotePeerId, int pieceIndex, int numberOfPieces) {
-        String message = System.currentTimeMillis() + ": Peer " + peerId + " has downloaded the piece " + pieceIndex +
-                " from " + remotePeerId + ". Now the number of pieces it has is " + numberOfPieces;
-        LOGGER.log(Level.INFO, message);
+        LOGGER.info(": Peer " + Id + " has downloaded the piece " + pieceIndex +
+                " from " + remotePeerId + "." +
+                "Now the number of pieces it has is "+numberOfPieces+"\n");
     }
 
     public static void logDownloadComplete() {
-        String message = System.currentTimeMillis() + ": Peer " + peerId + " has downloaded the complete file.";
+        LOGGER.info(": Peer " + Id + " has downloaded the complete file \n");
     }
 }
