@@ -14,25 +14,40 @@ import java.net.Socket;
 public class Client {
     private Peer peer;
     private Peer remotePeer;
-    Socket socket;
+    private ObjectOutputStream outputStream;
 
     public Client(Peer peer, Peer remotePeer) {
         this.peer = peer;
-        this.remotePeer = peer;
+        this.remotePeer = remotePeer;
     }
 
     public void connect() {
         try {
-            socket = new Socket(remotePeer.getIpAddress(), remotePeer.getPortNumber());
+            Socket socket = new Socket(remotePeer.getIpAddress(), remotePeer.getPortNumber());
             peer.addSocket(socket);
-            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+            outputStream = new ObjectOutputStream(socket.getOutputStream());
+            outputStream.flush();
+            peer.setOutputStream(outputStream);
             MessageController messageController = new MessageController(socket, peer, outputStream);
             Thread thread = new Thread(messageController);
             thread.start();
             byte[] message = HandshakeMessage.getMessage(peer.getId());
-            peer.send(message);
+            send(message);
         } catch(IOException ioException) {
             System.out.println("IOException while connecting to server " + remotePeer.getId());
+            ioException.printStackTrace();
+        }
+    }
+
+    private void send(byte[] message) {
+        try {
+            if(outputStream != null) {
+                System.out.println("Writing message from client " + new String(message));
+                outputStream.writeObject(message);
+                outputStream.flush();
+            }
+        } catch (IOException ioException) {
+            System.out.println("IOException while sending message " + new String(message));
             ioException.printStackTrace();
         }
     }

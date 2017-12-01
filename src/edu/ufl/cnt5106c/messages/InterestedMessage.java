@@ -11,11 +11,8 @@ public class InterestedMessage extends Message {
         int messageType = 2;
         byte[] message = new byte[5];
         byte[] messageLengthField = ByteBuffer.allocate(4).putInt(messageLength).array();
-        int i = 0;
-        for (i = 0; i < 4; i++) {
-            message[i] = messageLengthField[i];
-        }
-        message[i] = (byte) messageType;
+        System.arraycopy(messageLengthField, 0, message, 0, messageLengthField.length);
+        message[messageLengthField.length] = (byte) messageType;
         return message;
     }
 }

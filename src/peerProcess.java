@@ -34,6 +34,7 @@ public class peerProcess {
 
         for(Peer neighbor : peers) {
             if(neighbor.getId() != peerId) {
+                System.out.println("Opening connection between " + neighbor.getId() + " and " + peerId);
                 Client client = new Client(peer, neighbor);
                 client.connect();
             }

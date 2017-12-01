@@ -198,9 +198,11 @@ public class Peer {
     public int getPieceMissing(int remotePeerId) //Added by Ankit
     {
         boolean[] currPieces = this.getAvailableFilePieces();
+        System.out.println("Available pieces " + Arrays.toString(currPieces));
         Peer peerMap = this.getNeighborMap().get(remotePeerId);
         int ind = 0;
         boolean[] available = peerMap.availableFilePieces;
+        System.out.println("Available pieces in remote " + remotePeerId + " " + Arrays.toString(available));
         List<Integer> miss = new ArrayList<>();
         for(boolean cp:currPieces)
         {
@@ -214,12 +216,14 @@ public class Peer {
             ind++;
 
         }
+        System.out.println("Missing pieces list " + miss);
         if(miss.size() == 0)
         {
             return -1;
         }
         Random r = new Random();
         int rInt = r.nextInt(miss.size());
+        System.out.println("Will ask for missing piece " + miss.get(rInt));
         return miss.get(rInt);
     }
 
@@ -282,11 +286,17 @@ public class Peer {
     }
 
     private void chokeOrUnchokePeers(List<Integer> interestedPeers) {
-        List<Integer> preferredNeighbors = interestedPeers.subList(0, getCommonConfig().getNumberOfPreferredNeighbors());
+        List<Integer> preferredNeighbors;
+        if(interestedPeers.size() > commonConfig.getNumberOfPreferredNeighbors()) {
+            preferredNeighbors = interestedPeers.subList(0, getCommonConfig().getNumberOfPreferredNeighbors());
+        } else {
+            preferredNeighbors = interestedPeers.subList(0, interestedPeers.size());
+        }
         for(int unchokedPeerId : getUnchokedPeers()) {
             if(getOptimisticallyUnchokedPeer() != unchokedPeerId && !preferredNeighbors.contains(unchokedPeerId)) {
                 byte[] message = ChokeMessage.getMessage();
-                getNeighborMap().get(unchokedPeerId).send(message);
+                System.out.println("Sending choke message " + new String(message));
+                getNeighborMap().get(unchokedPeerId).send(getNeighborMap().get(unchokedPeerId).outputStream, message);
                 removeUnchokedPeer(unchokedPeerId);
             }
         }
@@ -294,7 +304,8 @@ public class Peer {
         for(int preferredNeighbor : preferredNeighbors) {
             if(!getUnchokedPeers().contains(preferredNeighbor)) {
                 byte[] message = UnchokeMessage.getMessage();
-                getNeighborMap().get(preferredNeighbor).send(message);
+                System.out.println("Sending unchoke message " + new String(message));
+                getNeighborMap().get(preferredNeighbor).send(getNeighborMap().get(preferredNeighbor).outputStream, message);
                 unchokePeer(preferredNeighbor);
             }
         }
@@ -330,7 +341,7 @@ public class Peer {
             Collections.shuffle(candidatePeers);
             int optimisticallyUnchokedPeerId = candidatePeers.get(0);
             byte[] message = UnchokeMessage.getMessage();
-            getNeighborMap().get(optimisticallyUnchokedPeerId).send(message);
+            getNeighborMap().get(optimisticallyUnchokedPeerId).send(getNeighborMap().get(optimisticallyUnchokedPeerId).outputStream, message);
             setOptimisticallyUnchokedPeer(optimisticallyUnchokedPeerId);
         }
     }
@@ -340,9 +351,10 @@ public class Peer {
         bytesDownloadedAfterUnchoking = 0;
     }
 
-    public void send(byte[] message) {
+    public void send(ObjectOutputStream outputStream, byte[] message) {
         try {
             if(outputStream != null) {
+                System.out.println("Writing message - peer " + id);
                 outputStream.writeObject(message);
                 outputStream.flush();
             }

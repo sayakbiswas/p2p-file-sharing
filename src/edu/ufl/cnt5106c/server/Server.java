@@ -14,6 +14,7 @@ import java.net.Socket;
  */
 public class Server implements Runnable {
     private Peer peer;
+    private ObjectOutputStream outputStream;
 
     public Server(Peer peer) {
         this.peer = peer;
@@ -27,12 +28,15 @@ public class Server implements Runnable {
             while(true) {
                 Socket socket = listener.accept();
                 peer.addSocket(socket);
-                ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+                outputStream = new ObjectOutputStream(socket.getOutputStream());
+                outputStream.flush();
+                peer.setOutputStream(outputStream);
                 MessageController messageController = new MessageController(socket, peer, outputStream);
                 Thread thread = new Thread(messageController);
                 thread.start();
                 byte[] message = HandshakeMessage.getMessage(peer.getId());
-                peer.send(message);
+                System.out.println("Sending message " + new String(message));
+                send(message);
             }
         } catch(IOException ioException) {
             System.out.println("IOException while opening socket at port number " + portNumber + " for peer " + peer.getId());
@@ -46,6 +50,19 @@ public class Server implements Runnable {
                     ioException1.printStackTrace();
                 }
             }
+        }
+    }
+
+    private void send(byte[] message) {
+        try {
+            if(outputStream != null) {
+                System.out.println("Writing message " + new String(message));
+                outputStream.writeObject(message);
+                outputStream.flush();
+            }
+        } catch (IOException ioException) {
+            System.out.println("IOException while sending message " + new String(message));
+            ioException.printStackTrace();
         }
     }
 }

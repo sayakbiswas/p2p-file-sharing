@@ -16,15 +16,16 @@ public class PieceMessage extends Message {
         for(i = 0; i < 4; i++) {
             message[i] = messageLengthField[i];
         }
-
         message[i++] = messageType;
         byte[] pieceIndexField = ByteBuffer.allocate(4).putInt(pieceIndex).array();
         while(i < 9) {
             message[i] = pieceIndexField[i - pieceIndexField.length - 1];
+            i++;
         }
         int j = 0;
         while(j < bytes.length) {
             message[i + j] = bytes[j];
+            j++;
         }
         return message;
     }

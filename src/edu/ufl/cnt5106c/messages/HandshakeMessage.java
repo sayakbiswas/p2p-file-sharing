@@ -16,9 +16,9 @@ public class HandshakeMessage {
         for(int i = handshakeHeaderLength; i < handshakeHeaderLength + 10; i++) {
             message[i] = 0;
         }
-        byte[] messagePeerIdField = ByteBuffer.allocate(4).putInt(peerId).array();
+        char[] peerIdArr = (peerId + "").toCharArray();
         for(int i = 0; i < 4; i++) {
-            message[handshakeHeaderLength + 10 + i] = messagePeerIdField[i];
+            message[handshakeHeaderLength + 10 + i] = (byte) peerIdArr[i];
         }
 
         return message;
@@ -43,7 +43,6 @@ public class HandshakeMessage {
                 return false;
             }
         }
-
         byte[] peerIdField = new byte[4];
         System.arraycopy(incomingMessage, HANDSHAKE_HEADER.length() + 10, peerIdField, 0, 4);
         for(int i = 0; i < 4; i++) {
@@ -51,13 +50,13 @@ public class HandshakeMessage {
                 return false;
             }
         }
-
         return true;
     }
 
     public static int getRemotePeerID(byte[] incomingMessage) {
         byte[] peerId = new byte[4];
         System.arraycopy(incomingMessage, HANDSHAKE_HEADER.length() + 10, peerId, 0, 4);
-        return ByteBuffer.wrap(peerId).getInt();
+        String peerIdString = new String(peerId);
+        return Integer.parseInt(peerIdString);
     }
 }

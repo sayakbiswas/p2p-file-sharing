@@ -30,7 +30,7 @@ public class PeerInfoConfig {
         try {
             loadPeerInfoConfig(peerInfoConfigFile);
             for(Map.Entry<Integer, Peer> entry : peerMap.entrySet()) {
-                entry.getValue().setNeighborMap(peerMap);
+                entry.getValue().setNeighborMap(new LinkedHashMap<>(peerMap));
             }
         } catch (Exception e) {
             System.out.println("Error initializing PeerInfoConfig");
@@ -47,7 +47,7 @@ public class PeerInfoConfig {
             fileNotFoundException.printStackTrace();
         }
         if(bufferedReader != null) {
-            String line = "";
+            String line;
             try {
                 while((line = bufferedReader.readLine()) != null) {
                     String[] tokens = line.trim().split("\\s+");
