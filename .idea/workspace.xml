@@ -3,17 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="377e25e2-4d13-4051-bf8f-c31ec9fffddd" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Common.cfg" afterPath="$PROJECT_DIR$/Common.cfg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PeerInfo.cfg" afterPath="$PROJECT_DIR$/PeerInfo.cfg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/ufl/cnt5106c/client/Client.java" afterPath="$PROJECT_DIR$/src/edu/ufl/cnt5106c/client/Client.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/ufl/cnt5106c/config/PeerInfoConfig.java" afterPath="$PROJECT_DIR$/src/edu/ufl/cnt5106c/config/PeerInfoConfig.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/ufl/cnt5106c/messages/HandshakeMessage.java" afterPath="$PROJECT_DIR$/src/edu/ufl/cnt5106c/messages/HandshakeMessage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/ufl/cnt5106c/messages/InterestedMessage.java" afterPath="$PROJECT_DIR$/src/edu/ufl/cnt5106c/messages/InterestedMessage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/ufl/cnt5106c/messages/PieceMessage.java" afterPath="$PROJECT_DIR$/src/edu/ufl/cnt5106c/messages/PieceMessage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/ufl/cnt5106c/peer/MessageController.java" afterPath="$PROJECT_DIR$/src/edu/ufl/cnt5106c/peer/MessageController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/ufl/cnt5106c/peer/Peer.java" afterPath="$PROJECT_DIR$/src/edu/ufl/cnt5106c/peer/Peer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/ufl/cnt5106c/server/Server.java" afterPath="$PROJECT_DIR$/src/edu/ufl/cnt5106c/server/Server.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/peerProcess.java" afterPath="$PROJECT_DIR$/src/peerProcess.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -53,11 +42,9 @@
       <file leaf-file-name="MessageController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/edu/ufl/cnt5106c/peer/MessageController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="156" column="67" lean-forward="false" selection-start-line="156" selection-start-column="67" selection-end-line="156" selection-end-column="67" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="126">
+              <caret line="7" column="23" lean-forward="true" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -847,7 +834,7 @@
       <workItem from="1511712272985" duration="1115000" />
       <workItem from="1511800749288" duration="13623000" />
       <workItem from="1511833230857" duration="22229000" />
-      <workItem from="1512050798504" duration="22547000" />
+      <workItem from="1512050798504" duration="22849000" />
     </task>
     <task id="LOCAL-00001" summary="Created classes for config, peer and logging">
       <created>1509054827603</created>
@@ -919,11 +906,18 @@
       <option name="project" value="LOCAL" />
       <updated>1511924776184</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Works, not sure about choking and unchoking">
+      <created>1512093240001</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1512093240001</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="106788000" />
+    <option name="totallyTimeSpent" value="107090000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -953,7 +947,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1957672" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1957672" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -990,7 +984,8 @@
     <MESSAGE value="Completed Server and Client code" />
     <MESSAGE value="Completed MessageController code" />
     <MESSAGE value="Fixed a few runtime errors" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed a few runtime errors" />
+    <MESSAGE value="Works, not sure about choking and unchoking" />
+    <option name="LAST_COMMIT_MESSAGE" value="Works, not sure about choking and unchoking" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1392,11 +1387,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/edu/ufl/cnt5106c/peer/MessageController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="156" column="67" lean-forward="false" selection-start-line="156" selection-start-column="67" selection-end-line="156" selection-end-column="67" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="126">
+          <caret line="7" column="23" lean-forward="true" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
+          <folding />
         </state>
       </provider>
     </entry>
