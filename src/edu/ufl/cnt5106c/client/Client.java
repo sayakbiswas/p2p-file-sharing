@@ -32,22 +32,9 @@ public class Client {
             Thread thread = new Thread(messageController);
             thread.start();
             byte[] message = HandshakeMessage.getMessage(peer.getId());
-            send(message);
+            peer.send(outputStream, message);
         } catch(IOException ioException) {
             System.out.println("IOException while connecting to server " + remotePeer.getId());
-            ioException.printStackTrace();
-        }
-    }
-
-    private void send(byte[] message) {
-        try {
-            if(outputStream != null) {
-                System.out.println("Writing message from client " + new String(message));
-                outputStream.writeObject(message);
-                outputStream.flush();
-            }
-        } catch (IOException ioException) {
-            System.out.println("IOException while sending message " + new String(message));
             ioException.printStackTrace();
         }
     }

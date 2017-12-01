@@ -36,7 +36,7 @@ public class Server implements Runnable {
                 thread.start();
                 byte[] message = HandshakeMessage.getMessage(peer.getId());
                 System.out.println("Sending message " + new String(message));
-                send(message);
+                peer.send(outputStream, message);
             }
         } catch(IOException ioException) {
             System.out.println("IOException while opening socket at port number " + portNumber + " for peer " + peer.getId());
@@ -50,19 +50,6 @@ public class Server implements Runnable {
                     ioException1.printStackTrace();
                 }
             }
-        }
-    }
-
-    private void send(byte[] message) {
-        try {
-            if(outputStream != null) {
-                System.out.println("Writing message " + new String(message));
-                outputStream.writeObject(message);
-                outputStream.flush();
-            }
-        } catch (IOException ioException) {
-            System.out.println("IOException while sending message " + new String(message));
-            ioException.printStackTrace();
         }
     }
 }

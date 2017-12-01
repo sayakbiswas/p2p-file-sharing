@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="377e25e2-4d13-4051-bf8f-c31ec9fffddd" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/ufl/cnt5106c/client/Client.java" afterPath="$PROJECT_DIR$/src/edu/ufl/cnt5106c/client/Client.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/ufl/cnt5106c/server/Server.java" afterPath="$PROJECT_DIR$/src/edu/ufl/cnt5106c/server/Server.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -29,22 +31,24 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Server.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Server.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/edu/ufl/cnt5106c/server/Server.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="36" column="67" lean-forward="false" selection-start-line="36" selection-start-column="67" selection-end-line="36" selection-end-column="67" />
+            <state relative-caret-position="472">
+              <caret line="54" column="0" lean-forward="false" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MessageController.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MessageController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/edu/ufl/cnt5106c/peer/MessageController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="7" column="23" lean-forward="true" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
-              <folding />
+            <state relative-caret-position="-2340">
+              <caret line="15" column="22" lean-forward="true" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="22" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -117,8 +121,8 @@
       <file leaf-file-name="Client.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/edu/ufl/cnt5106c/client/Client.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="522">
-              <caret line="43" column="38" lean-forward="true" selection-start-line="43" selection-start-column="38" selection-end-line="43" selection-end-column="38" />
+            <state relative-caret-position="486">
+              <caret line="40" column="0" lean-forward="false" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -186,15 +190,15 @@
         <option value="$PROJECT_DIR$/TheFile.dat" />
         <option value="$PROJECT_DIR$/src/edu/ufl/cnt5106c/config/PeerInfoConfig.java" />
         <option value="$PROJECT_DIR$/src/edu/ufl/cnt5106c/messages/HandshakeMessage.java" />
-        <option value="$PROJECT_DIR$/src/edu/ufl/cnt5106c/client/Client.java" />
         <option value="$PROJECT_DIR$/src/edu/ufl/cnt5106c/messages/InterestedMessage.java" />
         <option value="$PROJECT_DIR$/src/edu/ufl/cnt5106c/messages/PieceMessage.java" />
-        <option value="$PROJECT_DIR$/src/edu/ufl/cnt5106c/server/Server.java" />
         <option value="$PROJECT_DIR$/src/edu/ufl/cnt5106c/peer/MessageController.java" />
         <option value="$PROJECT_DIR$/src/edu/ufl/cnt5106c/peer/Peer.java" />
         <option value="$PROJECT_DIR$/PeerInfo.cfg" />
         <option value="$PROJECT_DIR$/Common.cfg" />
         <option value="$PROJECT_DIR$/src/peerProcess.java" />
+        <option value="$PROJECT_DIR$/src/edu/ufl/cnt5106c/client/Client.java" />
+        <option value="$PROJECT_DIR$/src/edu/ufl/cnt5106c/server/Server.java" />
       </list>
     </option>
   </component>
@@ -834,7 +838,7 @@
       <workItem from="1511712272985" duration="1115000" />
       <workItem from="1511800749288" duration="13623000" />
       <workItem from="1511833230857" duration="22229000" />
-      <workItem from="1512050798504" duration="22849000" />
+      <workItem from="1512050798504" duration="23898000" />
     </task>
     <task id="LOCAL-00001" summary="Created classes for config, peer and logging">
       <created>1509054827603</created>
@@ -913,11 +917,18 @@
       <option name="project" value="LOCAL" />
       <updated>1512093240001</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Works, not sure about choking and unchoking">
+      <created>1512093484782</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1512093484782</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="107090000" />
+    <option name="totallyTimeSpent" value="108139000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1308,14 +1319,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/edu/ufl/cnt5106c/client/Client.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="522">
-          <caret line="43" column="38" lean-forward="true" selection-start-line="43" selection-start-column="38" selection-end-line="43" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/edu/ufl/cnt5106c/messages/HandshakeMessage.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="450">
@@ -1337,17 +1340,6 @@
         <state relative-caret-position="234">
           <caret line="15" column="32" lean-forward="true" selection-start-line="15" selection-start-column="32" selection-end-line="15" selection-end-column="32" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/edu/ufl/cnt5106c/peer/Peer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="343" column="131" lean-forward="false" selection-start-line="343" selection-start-column="131" selection-end-line="343" selection-end-column="131" />
-          <folding>
-            <element signature="e#12770#12771#0" expanded="true" />
-            <element signature="e#12835#12836#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1377,18 +1369,39 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/edu/ufl/cnt5106c/server/Server.java">
+    <entry file="file://$PROJECT_DIR$/src/edu/ufl/cnt5106c/peer/Peer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="36" column="67" lean-forward="false" selection-start-line="36" selection-start-column="67" selection-end-line="36" selection-end-column="67" />
+        <state relative-caret-position="130">
+          <caret line="343" column="131" lean-forward="false" selection-start-line="343" selection-start-column="131" selection-end-line="343" selection-end-column="131" />
+          <folding>
+            <element signature="e#12770#12771#0" expanded="true" />
+            <element signature="e#12835#12836#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/edu/ufl/cnt5106c/client/Client.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="486">
+          <caret line="40" column="0" lean-forward="false" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/edu/ufl/cnt5106c/peer/MessageController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="7" column="23" lean-forward="true" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
+        <state relative-caret-position="-2340">
+          <caret line="15" column="22" lean-forward="true" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/edu/ufl/cnt5106c/server/Server.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="472">
+          <caret line="54" column="0" lean-forward="false" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
           <folding />
         </state>
       </provider>
