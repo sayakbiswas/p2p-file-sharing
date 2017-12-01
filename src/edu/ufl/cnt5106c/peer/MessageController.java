@@ -1,5 +1,6 @@
 package edu.ufl.cnt5106c.peer;
 
+import edu.ufl.cnt5106c.logging.PeerLogger;
 import edu.ufl.cnt5106c.messages.*;
 
 import java.io.IOException;
@@ -16,11 +17,13 @@ public class MessageController implements Runnable {
     private Peer peer;
     private ObjectOutputStream outputStream;
     private int remotePeerId;
+    PeerLogger LOGGER;
 
-    public MessageController(Socket socket, Peer peer, ObjectOutputStream outputStream) {
+    public MessageController(Socket socket, Peer peer, ObjectOutputStream outputStream,PeerLogger LOGGER) {
         this.socket = socket;
         this.peer = peer;
         this.outputStream = outputStream;
+        this.LOGGER = LOGGER;
     }
 
     public void run() {
@@ -53,13 +56,15 @@ public class MessageController implements Runnable {
                     if(incomingMessage[4] == 0) {
                         System.out.println("Received choke message");
                         peer.setUnchoked(false);
+                        LOGGER.logChoking(remotePeerId);
                     } else if(incomingMessage[4] == 1) {
                         System.out.println("Received unchoke message");
                         peer.setUnchoked(true);
                         peer.getNeighborMap().get(remotePeerId).resetUnchokeTimer();
                         int missingPieceIndex = peer.getPieceMissing(remotePeerId);
                         System.out.println("Missing piece index " + missingPieceIndex);
-                        if(missingPieceIndex != -1) {
+                        if(missingPieceIndex != -1)
+                        {
                             peer.requestPiece(missingPieceIndex, remotePeerId);
                             byte[] message = RequestMessage.getMessage(missingPieceIndex);
                             System.out.println("Sending request message " + new String(message));
@@ -71,11 +76,13 @@ public class MessageController implements Runnable {
                     {
                         System.out.println("Received interested message");
                         peer.addInterestedPeer(remotePeerId);
+                        LOGGER.logReceiveNotInterestedMessage(remotePeerId);
                     }
                     else if(incomingMessage[4] == 3)
                     {
                         System.out.println("Received not interested message");
                         peer.removeInterestedPeer(remotePeerId);
+                        LOGGER.logReceiveInterestedMessage(remotePeerId);
                     }
                     else if(incomingMessage[4] == 4)
                     {
